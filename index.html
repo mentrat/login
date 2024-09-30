@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <style>
+        *,
+        *:before,
+        *:after {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-y: scroll;
+            margin: auto;
+
+        }
+
+        body {
+            background: rgba(19, 35, 47, 0.9);
+            font-family: 'Titillium Web', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: #1ab188;
+            transition: .5s ease;
+        }
+
+        a:hover {
+            color: #179b77;
+        }
+
+        .formulario {
+            background: rgba(19, 35, 47, 0.9);
+            padding: 40px;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+        }
+
+        .grupo-pestañas {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 40px 0;
+        }
+
+        .grupo-pestañas:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .grupo-pestañas li a {
+            display: block;
+            text-decoration: none;
+            padding: 15px;
+            background: rgba(160, 179, 176, 0.25);
+            color: #a0b3b0;
+            font-size: 20px;
+            float: left;
+            width: 50%;
+            text-align: center;
+            cursor: pointer;
+            transition: .5s ease;
+        }
+
+        .grupo-pestañas li a:hover {
+            background: #179b77;
+            color: #ffffff;
+        }
+
+        .grupo-pestañas .activo a {
+            background: #1ab188;
+            color: #ffffff;
+        }
+
+        .contenido-pestañas>div {
+            display: none;
+        }
+
+        .contenido-pestañas>div.activo {
+            display: block;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            font-weight: 300;
+            margin: 0px;
+        }
+
+        label {
+            position: absolute;
+            transform: translateY(6px);
+            left: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            transition: all 0.25s ease;
+            -webkit-backface-visibility: hidden;
+            pointer-events: none;
+            font-size: 22px;
+        }
+
+        label .req {
+            margin: 2px;
+            color: #1ab188;
+        }
+
+        label.activo {
+            transform: translateY(50px);
+            left: 2px;
+            font-size: 14px;
+        }
+
+        label.activo .req {
+            opacity: 0;
+        }
+
+        label.resaltar {
+            color: #ffffff;
+        }
+
+        input,
+        textarea {
+            font-size: 22px;
+            display: block;
+            width: 100%;
+            padding: 5px 10px;
+            background: none;
+            background-image: none;
+            border: 1px solid #a0b3b0;
+            color: #ffffff;
+            border-radius: 0;
+            transition: border-color .25s ease, box-shadow .25s ease;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: 0;
+            border-color: #1ab188;
+        }
+
+        textarea {
+            border: 2px solid #a0b3b0;
+            resize: vertical;
+        }
+
+        .campo-envuelto {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .fila-superior:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .fila-superior>div {
+            float: left;
+            width: 48%;
+            margin-right: 4%;
+        }
+
+        .fila-superior>div:last-child {
+            margin: 0;
+        }
+
+        .boton {
+            border: 0;
+            outline: none;
+            border-radius: 0;
+            padding: 15px 0;
+            font-size: 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            background: #1ab188;
+            color: #ffffff;
+            transition: all 0.5s ease;
+            -webkit-appearance: none;
+        }
+
+        .boton:hover,
+        .boton:focus {
+            background: #179b77;
+        }
+
+        .boton-bloque {
+            display: block;
+            width: 100%;
+        }
+
+        .olvido {
+            margin-top: -20px;
+            text-align: right;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .logo {
+            background: rgba(19, 35, 47, 0.9);
+            padding: 40px;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+        }
+
+        img {
+            width: 260px;
+            height: 260px;
+            display: block;
+            position: relative;
+            top: -30px;
+        }
+
+        .registrate {
+            width: 260px;
+            height: 190px;
+            margin: auto;
+            margin: -50px auto 0 auto;
+        }
+
+        #gradient {
+            width: 100%;
+            height: 100%;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                background: rgba(19, 35, 47, 0.781);
+                font-family: 'Titillium Web', sans-serif;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                height: 100vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="gradient" />
+    <div class="formulario">
+
+
+        <ul class="grupo-pestañas">
+            <li class="pestaña activo"><a href="#registrarse">Regístrate</a></li>
+            <li class="pestaña"><a href="#iniciar-sesion">Iniciar Sesión</a></li>
+        </ul>
+
+        <div class="contenido-pestañas">
+            <div id="registrarse" class="activo">
+                <div class="registrate">
+                    <img src="logo.svg" alt="Logo de mi empresa">
+
+                </div>
+                <form action="/" method="post">
+
+                    <div class="fila-superior">
+                        <div class="campo-envuelto">
+                            <label>
+                                Nombre<span class="req">*</span>
+                            </label>
+                            <input type="text" required autocomplete="off" />
+                        </div>
+
+                        <div class="campo-envuelto">
+                            <label>
+                                Apellido<span class="req">*</span>
+                            </label>
+                            <input type="text" required autocomplete="off" />
+                        </div>
+                    </div>
+
+                    <div class="campo-envuelto">
+                        <label>
+                            Correo Electrónico<span class="req">*</span>
+                        </label>
+                        <input type="email" required autocomplete="off" />
+                    </div>
+
+                    <div class="campo-envuelto">
+                        <label>
+                            Crea una Contraseña<span class="req">*</span>
+                        </label>
+                        <input type="password" required autocomplete="off" />
+                    </div>
+
+                    <button type="submit" class="boton boton-bloque">Comenzar</button>
+
+                </form>
+
+            </div>
+
+            <div id="iniciar-sesion">
+                <div class="registrate">
+                    <img src="logo.svg" alt="Logo de mi empresa">
+
+                </div>
+                <h1>¡Bienvenido!</h1>
+                <br>
+
+                <form action="/" method="post">
+
+                    <div class="campo-envuelto">
+                        <label>
+                            Usuario<span class="req">*</span>
+                        </label>
+                        <input type="text" required autocomplete="off" />
+                    </div>
+
+                    <div class="campo-envuelto">
+                        <label>
+                            Contraseña<span class="req">*</span>
+                        </label>
+                        <input type="password" required autocomplete="off" />
+                    </div>
+
+                    <p class="olvido"><a href="#">¿Olvidaste tu contraseña?</a></p>
+
+                    <button class="boton boton-bloque">Iniciar Sesión</button>
+
+                </form>
+
+            </div>
+
+        </div><!-- contenido-pestañas -->
+
+    </div> <!-- /formulario -->
+    </div>
+
+    <script>
+        // Evento para los campos de entrada
+        $(".formulario")
+            .find("input, textarea")
+            .on("keyup blur focus", function (e) {
+                var $this = $(this),
+                    label = $this.prev("label");
+
+                if (e.type === "keyup") {
+                    if ($this.val() === "") {
+                        label.removeClass("activo resaltar");
+                    } else {
+                        label.addClass("activo resaltar");
+                    }
+                } else if (e.type === "blur") {
+                    if ($this.val() === "") {
+                        label.removeClass("activo resaltar");
+                    } else {
+                        label.removeClass("resaltar");
+                    }
+                } else if (e.type === "focus") {
+                    if ($this.val() === "") {
+                        label.removeClass("resaltar");
+                    } else if ($this.val() !== "") {
+                        label.addClass("resaltar");
+                    }
+                }
+            });
+
+        // Cambiar entre pestañas de registro y sesión
+        $(".pestaña a").on("click", function (e) {
+            e.preventDefault();
+
+            // Cambiar clase activa
+            $(this).parent().addClass("activo");
+            $(this).parent().siblings().removeClass("activo");
+
+            // Mostrar contenido de la pestaña seleccionada
+            var target = $(this).attr("href");
+            $(".contenido-pestañas > div").removeClass("activo");
+            $(target).addClass("activo");
+        });
+
+        //esto es para el fondo
+
+        var colors = new Array(
+            [0, 128, 0],    // Verde
+            [60, 179, 113], // Verde mediano
+            [0, 255, 255],  // Cian (verde-azul)
+            [0, 0, 255],    // Azul
+            [0, 0, 139],    // Azul oscuro
+            [32, 178, 170]);
+
+        var step = 0;
+        //color table indices for: 
+        // current color left
+        // next color left
+        // current color right
+        // next color right
+        var colorIndices = [0, 1, 2, 3];
+
+        //transition speed
+        var gradientSpeed = 0.002;
+
+        function updateGradient() {
+
+            if ($ === undefined) return;
+
+            var c0_0 = colors[colorIndices[0]];
+            var c0_1 = colors[colorIndices[1]];
+            var c1_0 = colors[colorIndices[2]];
+            var c1_1 = colors[colorIndices[3]];
+
+            var istep = 1 - step;
+            var r1 = Math.round(istep * c0_0[0] + step * c0_1[0]);
+            var g1 = Math.round(istep * c0_0[1] + step * c0_1[1]);
+            var b1 = Math.round(istep * c0_0[2] + step * c0_1[2]);
+            var color1 = "rgb(" + r1 + "," + g1 + "," + b1 + ")";
+
+            var r2 = Math.round(istep * c1_0[0] + step * c1_1[0]);
+            var g2 = Math.round(istep * c1_0[1] + step * c1_1[1]);
+            var b2 = Math.round(istep * c1_0[2] + step * c1_1[2]);
+            var color2 = "rgb(" + r2 + "," + g2 + "," + b2 + ")";
+
+            $('#gradient').css({
+                background: "-webkit-gradient(linear, left top, right top, from(" + color1 + "), to(" + color2 + "))"
+            }).css({
+                background: "-moz-linear-gradient(left, " + color1 + " 0%, " + color2 + " 100%)"
+            });
+
+            step += gradientSpeed;
+            if (step >= 1) {
+                step %= 1;
+                colorIndices[0] = colorIndices[1];
+                colorIndices[2] = colorIndices[3];
+
+                //pick two new target color indices
+                //do not pick the same as the current one
+                colorIndices[1] = (colorIndices[1] + Math.floor(1 + Math.random() * (colors.length - 1))) % colors.length;
+                colorIndices[3] = (colorIndices[3] + Math.floor(1 + Math.random() * (colors.length - 1))) % colors.length;
+
+            }
+        }
+
+        setInterval(updateGradient, 10);
+    </script>
+
+</body>
+
+</html>
